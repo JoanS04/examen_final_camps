@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         title: Text('Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.cloud_queue),
+            icon: Icon(Icons.exit_to_app),
             onPressed: () {
               Provider.of<LocalUserProvider>(context, listen: false).clean();
               Navigator.of(context).pushReplacementNamed('/login');
