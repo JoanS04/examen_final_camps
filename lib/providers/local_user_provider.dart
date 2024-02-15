@@ -36,8 +36,12 @@ class LocalUserProvider with ChangeNotifier {
   }
 
   void clean() {
+    this._nomUsuari = '';
+    this._contrassenya = '';
     Preferences.nomUsuari = '';
     Preferences.contrassenya = '';
     Preferences.recordar = false;
+    print('cleared');
+    notifyListeners();
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-// import '../ui/input_decorations.dart';
+//pagina de login
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -14,11 +14,14 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     LocalUserProvider localUserProvider = Provider.of<LocalUserProvider>(context, listen: false);
 
+    //si s'ha guardat un usuari, es redirigeix a la home
     if (localUserProvider.nomUsuari != '') {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed('/home');
       });
     }
+
+    //si no s'ha guardat un usuari, es mostra el formulari
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Screen'),
@@ -27,7 +30,7 @@ class LoginScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           localUserProvider.save();
-          Navigator.of(context).pushNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/home');
         },
         child: const Icon(Icons.save),
       ),
@@ -35,6 +38,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
+//formulari de login
 class _UserForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,9 +57,10 @@ class _UserForm extends StatelessWidget {
               SizedBox(height: 10),
               TextFormField(
                 initialValue: localUserProvider.nomUsuari,
+                onChanged: (value) => localUserProvider.nomUsuari = value,
                 validator: (value) {
-                  if (value == null || value.length < 1)
-                    return 'El nom és obligatori';
+                  if (value == null || value.length < 5)
+                    return 'El nom és massa curt';
                 },
                 decoration: InputDecoration(
                   labelText: 'nom',
@@ -67,6 +72,13 @@ class _UserForm extends StatelessWidget {
               SizedBox(height: 30),
               TextFormField(
                 initialValue: '${localUserProvider.contrassenya}',
+                onChanged: (value) {
+                  localUserProvider.contrassenya = value;
+                },
+                validator: (value) {
+                  if (value == null || value.length < 8)
+                    return 'la contraseña es massa curta minim 8';
+                },
                 decoration: InputDecoration(
                   labelText: 'Contrasenya',
                   border: OutlineInputBorder(
